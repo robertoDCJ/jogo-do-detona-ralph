@@ -9,12 +9,9 @@ const state = {
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
-        currentTime: 60,
+        currentTime: 6,
     },
-    actions: {
-        timerId: setInterval(randomSquare, 1000),
-        countDownTimerId: setInterval(countDown, 1000),
-    }
+    actions: {}
 };
 
 function countDown(){
@@ -26,6 +23,8 @@ function countDown(){
         clearInterval(state.actions.countDownTimerId);
         clearInterval(state.actions.timerId);
         alert('Game Over! O seu resultado foi: ' + state.values.result);
+        state.values.result = 0;
+        return state.values.currentTime = 6;
     }
 }
 
@@ -60,7 +59,9 @@ function addListenerHitBox() {
 }
 
 function initialize() {
+    state.view.score.textContent = 0;
     addListenerHitBox();
+    state.actions.timerId = setInterval(randomSquare, 1000);
+    state.actions.countDownTimerId = setInterval(countDown, 1000);
 }
 
-initialize();

@@ -1,3 +1,7 @@
+body {
+    position: relative;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -45,4 +49,16 @@
 .menu-time h2:nth-child(2),
 .menu-score h2:nth-child(2) {
     margin-top: 1rem;
+}
+
+button {
+    padding: .8rem;
+    border-radius: .5rem;
+    background-color: #d5d5d5;
+
+    font-size: 20px;
+
+    position: absolute;
+    bottom: .2rem;
+    left: calc(50% - 60px);
 }
