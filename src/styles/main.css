@@ -22,7 +22,6 @@ body {
 }
 
 .panel {
-    margin-top: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -52,13 +51,14 @@ body {
 }
 
 button {
-    padding: .8rem;
+    width: 10rem;
+    margin: 1rem auto;
+    padding: 0.5rem;
+    font-size: 20px;
     border-radius: .5rem;
     background-color: #d5d5d5;
+}
 
-    font-size: 20px;
-
-    position: absolute;
-    bottom: .2rem;
-    left: calc(50% - 60px);
+button:active {
+    background-color: #767676;
 }
