@@ -11,7 +11,9 @@ const state = {
         result: 0,
         currentTime: 6,
     },
-    actions: {}
+    actions: {
+        
+    }
 };
 
 function countDown(){
@@ -22,6 +24,8 @@ function countDown(){
         playSound('game-over-arcade-6435.mp3');
         clearInterval(state.actions.countDownTimerId);
         clearInterval(state.actions.timerId);
+        state.actions.countDownTimerId = null;
+        state.actions.timerId = null;
         alert('Game Over! O seu resultado foi: ' + state.values.result);
         state.values.result = 0;
         return state.values.currentTime = 6;
