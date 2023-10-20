@@ -3,32 +3,54 @@ const state = {
         squares: document.querySelectorAll('.square'),
         enemy: document.querySelector('.enemy'),
         timeLeft: document.querySelector('#time-left'),
-        score: document.querySelector('#score')
+        score: document.querySelector('#score'),
+        life: document.querySelector('#life')
     },
     values: {
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
-        currentTime: 6,
+        currentTime: 15,
+        howManyLife: 3
     },
     actions: {
-        
+
     }
 };
 
-function countDown(){
+async function decreaseLife() {
+    return state.values.howManyLife--;
+}
+
+function clearIntervals() {
+    clearInterval(state.actions.countDownTimerId);
+    clearInterval(state.actions.timerId);
+    state.actions.countDownTimerId = null;
+    state.actions.timerId = null;
+}
+
+function countDown() {
     state.values.currentTime--;
     state.view.timeLeft.textContent = state.values.currentTime;
 
-    if(state.values.currentTime <= 0) {
+    if (state.values.currentTime <= 0) {
+        decreaseLife();
+        state.view.life.textContent = `x${state.values.howManyLife}`;
         playSound('game-over-arcade-6435.mp3');
-        clearInterval(state.actions.countDownTimerId);
-        clearInterval(state.actions.timerId);
-        state.actions.countDownTimerId = null;
-        state.actions.timerId = null;
-        alert('Game Over! O seu resultado foi: ' + state.values.result);
+        clearIntervals();
+        alert(`Play ${state.values.howManyLife} more times`);
+        return state.values.currentTime = 15;
+    }
+}
+
+function gameOver() {
+    if (state.values.howManyLife <= 0) {
+        alert(`Game Over! You scored ${state.values.result} points`);
+        clearIntervals();
         state.values.result = 0;
-        return state.values.currentTime = 6;
+        state.view.score.textContent = 0;
+        state.values.howManyLife = 3;
+        return state.view.life.textContent = `x${state.values.howManyLife}`;
     }
 }
 
@@ -63,9 +85,9 @@ function addListenerHitBox() {
 }
 
 function initialize() {
-    state.view.score.textContent = 0;
     addListenerHitBox();
     state.actions.timerId = setInterval(randomSquare, 1000);
     state.actions.countDownTimerId = setInterval(countDown, 1000);
+    setInterval(gameOver(), 1000);
 }
 
