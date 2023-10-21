@@ -12,7 +12,7 @@ const state = {
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
-        currentTime: 4,
+        currentTime: 10,
         howManyLife: 3
     },
     actions: {
@@ -40,7 +40,7 @@ function countDown() {
         state.view.life.textContent = `x${state.values.howManyLife}`;
         clearIntervals();
         showAlert(`Play ${state.values.howManyLife} more times`, 'Restart');
-        return state.values.currentTime = 4;
+        return state.values.currentTime = 10;
     }
 }
 
