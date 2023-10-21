@@ -4,13 +4,15 @@ const state = {
         enemy: document.querySelector('.enemy'),
         timeLeft: document.querySelector('#time-left'),
         score: document.querySelector('#score'),
-        life: document.querySelector('#life')
+        life: document.querySelector('#life'),
+        textAlert: document.querySelector('#text-custom-alert'),
+        buttonAlert: document.querySelector('#button-custom-alert')
     },
     values: {
         gameVelocity: 1000,
         hitPosition: 0,
         result: 0,
-        currentTime: 15,
+        currentTime: 4,
         howManyLife: 3
     },
     actions: {
@@ -36,21 +38,23 @@ function countDown() {
     if (state.values.currentTime <= 0) {
         decreaseLife();
         state.view.life.textContent = `x${state.values.howManyLife}`;
-        playSound('game-over-arcade-6435.mp3');
         clearIntervals();
-        alert(`Play ${state.values.howManyLife} more times`);
-        return state.values.currentTime = 15;
+        showAlert(`Play ${state.values.howManyLife} more times`, 'Restart');
+        return state.values.currentTime = 4;
     }
 }
 
 function gameOver() {
     if (state.values.howManyLife <= 0) {
-        alert(`Game Over! You scored ${state.values.result} points`);
-        clearIntervals();
-        state.values.result = 0;
-        state.view.score.textContent = 0;
-        state.values.howManyLife = 3;
-        return state.view.life.textContent = `x${state.values.howManyLife}`;
+        setTimeout(() => {
+            showAlert(`Game Over! You scored ${state.values.result} points`, 'Exit');
+            playSound('game-over-arcade-6435.mp3');
+            clearIntervals();
+            state.values.result = 0;
+            state.view.score.textContent = 0;
+            state.values.howManyLife = 3;
+            state.view.life.textContent = `x${state.values.howManyLife}`;
+        }, 600);
     }
 }
 
@@ -84,6 +88,37 @@ function addListenerHitBox() {
     })
 }
 
+function refresh() {
+    location.reload();
+}
+
+function showAlert(text, button) {
+    state.view.textAlert.textContent = text;
+    state.view.buttonAlert.textContent = button;
+    const alert = document.getElementById('custom-alert');
+    alert.style.display = 'block';
+    setTimeout(() => {
+        alert.classList.add('show');
+    }, 50)
+
+    if (state.view.buttonAlert.textContent === 'START') {
+        state.view.buttonAlert.addEventListener('click', initialize);
+    }
+
+    if (state.view.buttonAlert.textContent === 'Exit') {
+        state.view.buttonAlert.removeEventListener('click', initialize);
+        state.view.buttonAlert.addEventListener('click', refresh);
+    }
+}
+
+function closedAlert() {
+    const alert = document.getElementById('custom-alert');
+    alert.classList.remove('show');
+    setTimeout(() => {
+        alert.style.display = 'none';
+    }, 500);
+}
+
 function initialize() {
     addListenerHitBox();
     state.actions.timerId = setInterval(randomSquare, 1000);
@@ -91,3 +126,4 @@ function initialize() {
     setInterval(gameOver(), 1000);
 }
 
+showAlert("Let's go!", 'START');
